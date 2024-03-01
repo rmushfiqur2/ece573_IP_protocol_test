@@ -13,7 +13,6 @@ class SingleTCPHTTPServer(HTTPServer):
         if self.connections:
             # If there's an existing connection, close the new one
             request.close()
-            print("existing")
         else:
             # Accept the new connection and store it
             self.connections.append(request)

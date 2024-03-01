@@ -13,8 +13,9 @@ def receive_http1_1(num_runs, source_url, destination_url):
         #with s.get(source_url) as response:
         response = requests.get(source_url)
         end_time = time.time()
-        #with open(destination_url, 'wb') as f:
-            #f.write(response.content)
+        with open(destination_url, 'wb') as f:
+            f.write(response.content)
+        end_time = time.time()
         transfer_time = end_time - start_time
         transfer_times.append(transfer_time)
         #content_bytes.append(len(str(response.content)))
@@ -27,7 +28,8 @@ def receive_http1_1(num_runs, source_url, destination_url):
         content_bytes.append(int(response.headers['Content-length']))
     return transfer_times, content_bytes, header_bytes
 
-server_ip_addr = 'http://10.153.61.9' # internal ip addr (on same AP/ public ip address)
+#server_ip_addr = 'http://10.153.61.9'
+server_ip_addr = 'http://10.154.16.162' # internal ip addr (on same AP/ public ip address)
 server_port = '8890'
 
 # test.txt
@@ -70,6 +72,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1024, ' kBPS')
 
 # 100 kB
 
@@ -91,6 +94,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1024, ' kBPS')
 
 # 1 MB
 
@@ -112,6 +116,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1024, ' kBPS')
 
 # 10 MB
 
@@ -133,3 +138,4 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1024, ' kBPS')
