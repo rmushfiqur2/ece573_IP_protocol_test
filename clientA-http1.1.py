@@ -31,30 +31,6 @@ def receive_http1_1(num_runs, source_url, destination_url):
 
 server_ip_addr = 'http://10.153.50.73' # internal ip addr (on same AP/ public ip address)
 server_port = '8000'
-"""server_ip_addr = 'https://www.example.com/'
-server_port = '443' #https
-
-# test.txt
-filename = 'index.html'
-source_url = server_ip_addr + ':' + server_port + '/' + filename
-destination_url = filename  # Save in local directory
-
-transfer_times, content_bytes, header_bytes = receive_http1_1(50, source_url, destination_url)
-
-# Transpose arrays into rows
-data = zip(transfer_times, content_bytes, header_bytes)
-# Define the file name
-file_name = filename + '.csv'
-# Write data to CSV file
-with open(file_name, 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    # Write header if needed
-    writer.writerow(['Time(s)', 'Content(bytes)', 'Header(bytes)'])  # Example header
-    # Write data rows
-    for row in data:
-        writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
-dfs = ggkokk + 1"""
 
 # 10 kB
 filename = 'B_10kB'
@@ -75,7 +51,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')
 
 # 100 kB
 
@@ -97,7 +73,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')
 
 # 1 MB
 
@@ -119,7 +95,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')
 
 # 10 MB
 
@@ -141,4 +117,4 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')

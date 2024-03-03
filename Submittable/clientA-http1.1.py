@@ -41,7 +41,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')
 
 # 100 kB
 
@@ -63,7 +63,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')
 
 # 1 MB
 
@@ -85,7 +85,7 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')
 
 # 10 MB
 
@@ -107,4 +107,4 @@ with open(file_name, 'w', newline='') as csvfile:
     # Write data rows
     for row in data:
         writer.writerow(row)
-print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times), ' kBPS')
+print((sum(header_bytes)+sum(content_bytes))/sum(transfer_times)/1000, ' kBPS')
