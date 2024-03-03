@@ -13,7 +13,10 @@ ses = lt.session()
 ses.listen_on(6881, 6891)
 
 info = lt.torrent_info(sys.argv[1])
-h = ses.add_torrent({'ti': info, 'save_path': './'})
+h = ses.add_torrent({'ti': info, 'save_path': './Data_files/'})
+
+
+
 print('starting', h.name())
 ses.start_dht()
 print(ses.is_dht_running())
@@ -31,3 +34,6 @@ while (h.status().state != lt.torrent_status.seeding):
    time.sleep(1)
 
 print(h.name(), 'complete')
+
+while True:
+   time.sleep(1)

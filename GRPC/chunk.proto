@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+service FileServer {
+  rpc upload(stream Chunk) returns (Reply) {}
+  rpc download(Request) returns (stream Chunk) {}
+  rpc TransferFile(TransferRequest) returns (TransferResponse) {}
+}
+
+message Chunk {
+  bytes buffer = 1;
+}
+
+message Request {
+  string name = 1;
+}
+
+message Reply {
+  int32 length = 1;
+}
+
+message TransferRequest {
+  int32 file_size = 1;
+}
+
+message TransferResponse {
+  bytes file_content = 1;
+}
