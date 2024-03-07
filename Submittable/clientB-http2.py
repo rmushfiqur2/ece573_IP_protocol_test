@@ -11,26 +11,24 @@ def receive_http2(num_runs, host, source_url, destination_url, n_outstanding_req
 
     for j in range(num_runs // n_outstanding_req):
         n_requests = []
-        n_times = []
+        start_time = time.time()
         for i in range(n_outstanding_req):
             r = conn.request('GET', source_url)
             n_requests.append(r)
-            start_time = time.time()
-            n_times.append(start_time)
         for i in range(n_outstanding_req):
             resp = conn.get_response(n_requests[i])
             with open(destination_url, 'wb') as f:
                 f.write(resp.read())
-            end_time = time.time()
-            transfer_times.append(end_time - n_times[i])
-            header_bytes.append(len(str(resp.headers)))
-            content_bytes.append(int(str(dict(resp.headers)[b'content-length'][0])[2:-1]))
+        end_time = time.time()
+        transfer_times.append(end_time - start_time)
+        header_bytes.append(len(str(resp.headers))*n_outstanding_req)
+        content_bytes.append(int(str(dict(resp.headers)[b'content-length'][0])[2:-1])*n_outstanding_req)
     conn.close()
 
     return transfer_times, content_bytes, header_bytes
 
-server_ip_addr = 'http://10.155.37.31' # internal ip addr (on same AP/ public ip address)
-server_port = '8000'
+server_ip_addr = '10.155.37.31' # internal ip addr (on same AP/ public ip address)
+server_port = '8080'
 host = server_ip_addr + ':' + server_port
 
 # 10 kB
@@ -38,7 +36,7 @@ filename = 'A_10kB'
 source_url = 'Data_files/' + filename
 destination_url = 'Data_files/' + filename  # Save in local directory
 
-transfer_times, content_bytes, header_bytes = receive_http2(1000, host, source_url, destination_url, n_outstanding_req=10)
+transfer_times, content_bytes, header_bytes = receive_http2(1000, host, source_url, destination_url, n_outstanding_req=50)
 
 # Transpose arrays into rows
 data = zip(transfer_times, content_bytes, header_bytes)
@@ -82,7 +80,7 @@ filename = 'A_1MB'
 source_url = '/Data_files/' + filename
 destination_url = 'Data_files/' + filename  # Save in local directory
 
-transfer_times, content_bytes, header_bytes = receive_http2(10, host, source_url, destination_url, n_outstanding_req=10)
+transfer_times, content_bytes, header_bytes = receive_http2(10, host, source_url, destination_url, n_outstanding_req=2)
 
 # Transpose arrays into rows
 data = zip(transfer_times, content_bytes, header_bytes)

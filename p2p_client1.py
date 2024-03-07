@@ -12,7 +12,7 @@ import sys
 ses = lt.session()
 ses.listen_on(6881, 6891)
 
-info = lt.torrent_info(sys.argv[1])
+info = lt.torrent_info('A_10MB.torrent')
 h = ses.add_torrent({'ti': info, 'save_path': './Data_files/'})
 
 

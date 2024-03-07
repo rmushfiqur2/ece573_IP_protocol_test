@@ -30,7 +30,7 @@ def receive_http2(num_runs, host, source_url, destination_url, n_outstanding_req
     return transfer_times, content_bytes, header_bytes
 
 server_ip_addr = 'http://10.153.50.73' # internal ip addr (on same AP/ public ip address)
-server_port = '8000'
+server_port = '8080'
 host = server_ip_addr + ':' + server_port
 
 # 10 kB
