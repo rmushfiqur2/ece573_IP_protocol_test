@@ -80,8 +80,8 @@ class FileManager():
 
             if os.path.isfile(file_path):
                 os.remove(file_path)
-                fd = open(file_path, 'wb')
-                # fd.close()
+                #fd = open(file_path, 'wb')
+                #fd.close()
                 #self.files.append({
                     #'descriptor': fd,
                     #'length_to_write': fd['length'],

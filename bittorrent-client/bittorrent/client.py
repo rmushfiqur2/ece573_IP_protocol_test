@@ -28,6 +28,7 @@ class TorrentClient():
 
     def __init__(self, torrent_file, download_destination, loop, port, ip, download_times=1):
         self.logger = logging.getLogger('main.torrent_client')
+        self.logger.propagate = False
         self.loop = loop
         self.torrent = Torrent(torrent_file)
         self.pieces = Pieces(self.torrent)
@@ -45,6 +46,8 @@ class TorrentClient():
         self.download_completed = False
         self.available_buffers = []
         self.download_destination = download_destination
+        self.total_app_layer_bytes = 0
+        self.content_bytes = 0
 
     def _hand_shake(self):
         """ https://wiki.theory.org/BitTorrentSpecification#Handshake """
@@ -136,6 +139,7 @@ class TorrentClient():
                     peer.writer.write(INTERESTED)
                     await peer.writer.drain()
                     self.logger.info('Sent INTERESTED message to Peer {}'.format(peer.address))
+                self.total_app_layer_bytes += 68
             except (ConnectionRefusedError, TimeoutError, Exception) as e:
                 self.logger.info(e)
                 break
@@ -155,6 +159,8 @@ class TorrentClient():
                 if not chunk:
                     return
                 first_4_bytes += chunk
+
+            self.total_app_layer_bytes += 4
 
             # self.logger.info('first 4 bytes: {}'.format(first_4_bytes))
             message_length = struct.unpack('!i', first_4_bytes)[0] # decode binary data as 4-byte signed integer (!i)
@@ -177,8 +183,10 @@ class TorrentClient():
 
                 message_id = message_body[0]
                 payload = message_body[1:]
+                self.total_app_layer_bytes += message_length
                 await self._message_handler(peer, message_id, payload)
                 if self.download_completed:
+                    self._close_connection(peer)
                     return
 
     async def _message_handler(self, peer, msg_id, payload):
@@ -253,7 +261,6 @@ class TorrentClient():
     async def _request_piece(self, peer):
 
         if not peer.choked:
-            print(len(peer.queue))
             while len(peer.queue) > 0:
                 #index_left = set()
                 #for b in peer.queue.queue:
@@ -283,7 +290,7 @@ class TorrentClient():
             'request_length': len(payload),
             'payload': payload
         }
-
+        self.content_bytes += len(message_payload) - 8
         # self.logger.info('got a block from {}, {}, {}'.format(peer.address, block['index'], block['begin_offset']))
         piece_index, piece = self.pieces.add_received(block)
 
